@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robert Arends Web Map</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        #map { height: 500px; }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        // Initialize the map
+        var map = L.map('map').setView([30.6102, -96.3400], 15); // Initialize map view to Kyle Field location
+
+        // Add base layer (optional)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+        }).addTo(map);
+
+        // Draw circle around Kyle Field with popup
+        var kyleField = L.circle([30.6102, -96.3419], {
+            color: 'blue',
+            fillColor: '#f03',
+            fillOpacity: 0.5,
+            radius: 100
+        }).addTo(map);
+        kyleField.bindPopup("<b>Kyle Field</b><br>This is the home of the Aggies!");
+
+        // Custom icons for O&M and Academic Building
+        var customIcon = L.icon({
+            iconUrl: 'path_to_custom_icon.png',
+            iconSize: [32, 37],
+            iconAnchor: [16, 37],
+            popupAnchor: [0, -37]
+        });
+
+        var omBuilding = L.marker([30.6167, -96.3397], {icon: customIcon}).addTo(map);
+        var academicBuilding = L.marker([30.6131, -96.3406], {icon: customIcon}).addTo(map);
+
+        omBuilding.bindPopup("<b>O&M Building</b><br>This is the O&M building.");
+        academicBuilding.bindPopup("<b>Academic Building</b><br>This is the Academic building.");
+
+        // Event to show coordinates on click
+        function onMapClick(e) {
+            L.popup()
+                .setLatLng(e.latlng)
+                .setContent("Coordinates: " + e.latlng.toString())
+                .openOn(map);
+        }
+
+        map.on('click', onMapClick);
+    </script>
+</body>
+</html>
